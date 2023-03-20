@@ -1,5 +1,6 @@
 package nlu.edu.vn.ecommerce.controllers;
 
+import nlu.edu.vn.ecommerce.exception.ErrorException;
 import nlu.edu.vn.ecommerce.models.RefreshToken;
 import nlu.edu.vn.ecommerce.models.User;
 import nlu.edu.vn.ecommerce.dto.LoginDTO;
@@ -10,24 +11,28 @@ import nlu.edu.vn.ecommerce.repositories.RefreshTokenRepository;
 import nlu.edu.vn.ecommerce.repositories.UserRepository;
 import nlu.edu.vn.ecommerce.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
+import javax.validation.Validator;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -44,6 +49,8 @@ public class AuthController {
     PasswordEncoder passwordEncoder;
     @Autowired
     UserService userService;
+    @Autowired
+    private Validator validator;
 
     @PostMapping("/login")
     @Transactional
@@ -64,7 +71,20 @@ public class AuthController {
 
     @PostMapping("signup")
     @Transactional
-    public ResponseEntity<?> signup(@Valid @RequestBody SignupDTO dto) {
+    public ResponseEntity<?> signup(@Valid @RequestBody SignupDTO dto, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()){
+            return ResponseEntity.badRequest().body(new ErrorException(HttpStatus.NOT_FOUND, bindingResult.getAllErrors().get(0).getDefaultMessage()));
+        }
+
+
+        if(userRepository.existsByUsername(dto.getUsername())){
+            return ResponseEntity.badRequest().body(new ErrorException(HttpStatus.NOT_FOUND,"Tài khoản đã tồn tại"));
+        }
+        if(userRepository.existsByEmail(dto.getEmail())){
+            return ResponseEntity.badRequest().body(new ErrorException(HttpStatus.NOT_FOUND,"Email đã tồn tại"));
+        }
+
+
         User user = new User(dto.getUsername(), dto.getEmail(), passwordEncoder.encode(dto.getPassword()));
         List<String> roles = new ArrayList<>();
         roles.add("ROLE_USER");

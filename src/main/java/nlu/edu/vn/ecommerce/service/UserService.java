@@ -1,17 +1,15 @@
 package nlu.edu.vn.ecommerce.service;
 
 import nlu.edu.vn.ecommerce.models.User;
+import nlu.edu.vn.ecommerce.repositories.ProductRepository;
 import nlu.edu.vn.ecommerce.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -35,5 +33,13 @@ public class UserService implements UserDetailsService {
     public User findById(String id) {
         return userRepository.findById(id)
                 .orElseThrow(() -> new UsernameNotFoundException("user id not found"));
+    }
+
+    @Service
+    public static class ProductService {
+        @Autowired
+        private ProductRepository productRepository;
+
+
     }
 }

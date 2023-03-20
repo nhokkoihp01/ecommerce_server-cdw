@@ -1,6 +1,7 @@
 package nlu.edu.vn.ecommerce.controllers;
 
 import nlu.edu.vn.ecommerce.dto.UserDTO;
+import nlu.edu.vn.ecommerce.exception.ResponseObject;
 import nlu.edu.vn.ecommerce.models.User;
 import nlu.edu.vn.ecommerce.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,6 @@ public class UserController {
     @GetMapping("/{id}")
     @PreAuthorize("#user.id == #id")
     public ResponseEntity<?> me(@AuthenticationPrincipal User user, @PathVariable String id) {
-        return ResponseEntity.ok(UserDTO.from(userRepository.findById(id).orElseThrow()));
+        return ResponseEntity.ok().body(UserDTO.from(userRepository.findById(id).orElseThrow()));
     }
 }

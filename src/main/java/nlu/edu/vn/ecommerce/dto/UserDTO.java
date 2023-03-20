@@ -21,7 +21,7 @@ public class UserDTO {
 
 
     public static ResponseObject from(User user) {
-        return new ResponseObject("ok","",builder()
+        return new ResponseObject("ok","thành công",builder()
                 .id(user.getId())
                 .username(user.getUsername())
                 .image(user.getImage())

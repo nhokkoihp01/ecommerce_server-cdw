@@ -21,7 +21,7 @@ public class UserController {
 
     @GetMapping("/me")
     public ResponseEntity<?> me(@AuthenticationPrincipal User user) {
-        return ResponseEntity.ok(user);
+        return ResponseEntity.ok().body(UserDTO.from(user));
     }
 
     @GetMapping("/{id}")

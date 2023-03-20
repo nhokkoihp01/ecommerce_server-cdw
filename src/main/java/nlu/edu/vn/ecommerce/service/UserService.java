@@ -26,8 +26,6 @@ public class UserService implements UserDetailsService {
         roles.add("ROLE_USER");
         return new User(user.getId(), user.getUsername(), user.getPassword(), roles);
 
-//        return userRepository.findByUsername(username)
-//                .orElseThrow(() -> new UsernameNotFoundException("username not found"));
     }
 
     public User findById(String id) {

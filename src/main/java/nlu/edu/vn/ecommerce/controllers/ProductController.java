@@ -20,7 +20,10 @@ public class ProductController {
 
     @GetMapping("/all")
     public ResponseEntity<?> getAllProducts() {
-        return ResponseEntity.ok().body(iProductService.getAllProducts());
+        return ResponseEntity.ok().body(
+                new ResponseObject(HttpStatus.FOUND.toString(), "thành công", iProductService.getAllProducts())
+        );
+
     }
 
     @PostMapping("")

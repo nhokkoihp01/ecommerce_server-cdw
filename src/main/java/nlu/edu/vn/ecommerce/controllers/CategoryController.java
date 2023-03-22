@@ -17,7 +17,7 @@ public class CategoryController {
     private ICategoryService iCategoryService;
     @GetMapping("")
     public ResponseEntity<?> getAllCategories(){
-        return ResponseEntity.status(HttpStatus.FOUND).body(
+        return ResponseEntity.ok().body(
                 iCategoryService.getAllCategories()
         );
     }
@@ -29,7 +29,7 @@ public class CategoryController {
                     new ResponseObject("failed", "Sản phẩm đã tồn tại", null)
             );
         }
-        return ResponseEntity.status(HttpStatus.FOUND).body(
+        return ResponseEntity.ok().body(
                 iCategoryService.insertCategory(category)
         );
 

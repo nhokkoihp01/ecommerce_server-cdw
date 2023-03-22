@@ -17,14 +17,12 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
@@ -35,6 +33,7 @@ import java.util.List;
 import java.util.Set;
 
 @RestController
+@CrossOrigin(origins = "*", allowedHeaders = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
 @RequestMapping("/api/auth")
 public class AuthController {
     @Autowired
@@ -55,18 +54,23 @@ public class AuthController {
     @PostMapping("/login")
     @Transactional
     public ResponseEntity<?> login(@Valid @RequestBody LoginDTO dto) {
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(dto.getUsername(), dto.getPassword()));
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        User user = (User) authentication.getPrincipal();
+        try {
+            Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(dto.getUsername(), dto.getPassword()));
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            User user = (User) authentication.getPrincipal();
 
-        RefreshToken refreshToken = new RefreshToken();
-        refreshToken.setOwner(user);
-        refreshTokenRepository.save(refreshToken);
+            RefreshToken refreshToken = new RefreshToken();
+            refreshToken.setOwner(user);
+            refreshTokenRepository.save(refreshToken);
 
-        String accessToken = jwtHelper.generateAccessToken(user);
-        String refreshTokenString = jwtHelper.generateRefreshToken(user, refreshToken);
+            String accessToken = jwtHelper.generateAccessToken(user);
+            String refreshTokenString = jwtHelper.generateRefreshToken(user, refreshToken);
 
-        return ResponseEntity.ok(new TokenDTO(user.getId(), accessToken, refreshTokenString));
+            return ResponseEntity.ok(new TokenDTO(user.getId(), accessToken, refreshTokenString));
+        }
+        catch (AuthenticationException e){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorException(HttpStatus.UNAUTHORIZED,"unauthorized"));
+        }
     }
 
     @PostMapping("signup")

@@ -24,6 +24,7 @@ public class UserService implements UserDetailsService {
         }
         List<String> roles = new ArrayList<>();
         roles.add("ROLE_USER");
+        roles.add("ROLE_ADMIN");
         return new User(user.getId(), user.getUsername(), user.getPassword(), roles);
 
     }

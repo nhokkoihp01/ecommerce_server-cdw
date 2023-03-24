@@ -39,6 +39,8 @@ public class User implements UserDetails {
     @NonNull
     private String firstName;
     @NonNull
+    private String lastName;
+    @NonNull
     private String numberPhone;
     private List<String> roles;
 
@@ -54,6 +56,16 @@ public class User implements UserDetails {
         this.username = username;
         this.email = email;
         this.password = password;
+    }
+
+    public User(@NonNull String username, @NonNull String email, @NonNull String password, @NonNull String image, @NonNull String firstName, @NonNull String lastName, @NonNull String numberPhone) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.image = image;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.numberPhone = numberPhone;
     }
 
     @Override

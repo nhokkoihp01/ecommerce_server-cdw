@@ -11,7 +11,7 @@ import org.springframework.data.mongodb.config.AbstractMongoClientConfiguration;
 import org.springframework.data.mongodb.core.MongoTemplate;
 
 @Configuration
-public class Config extends AbstractMongoClientConfiguration {
+public class MongodbConfig extends AbstractMongoClientConfiguration {
     @Value("${spring.data.mongodb.database}")
     private String databaseName;
     @Value("${spring.data.mongodb.uri}")

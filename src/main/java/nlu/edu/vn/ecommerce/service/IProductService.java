@@ -4,6 +4,7 @@ import nlu.edu.vn.ecommerce.exception.ResponseObject;
 import nlu.edu.vn.ecommerce.models.Product;
 
 import java.util.List;
+import java.util.Optional;
 
 
 public interface IProductService {
@@ -12,5 +13,6 @@ public interface IProductService {
     List<Product> getAllProducts();
     List<Product> findProductByName(String name);
     ResponseObject insertProduct(Product product);
+    Optional<Product> getProductById(String id);
 
 }

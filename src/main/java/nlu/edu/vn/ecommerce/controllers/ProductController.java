@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/products")
@@ -21,9 +22,19 @@ public class ProductController {
     @GetMapping("/all")
     public ResponseEntity<?> getAllProducts() {
         return ResponseEntity.ok().body(
-                new ResponseObject(HttpStatus.FOUND.toString(), "thành công", iProductService.getAllProducts())
+                new ResponseObject("oke", "thành công", iProductService.getAllProducts())
         );
 
+    }
+    @GetMapping("/{id}")
+    public ResponseEntity<ResponseObject> findProductById(@PathVariable String id){
+        Optional<Product> product = iProductService.getProductById(id);
+        if(product.isPresent()){
+            return  ResponseEntity.ok().body(new ResponseObject("oke","Thành công",product));
+        }
+        else{
+            throw new NotFoundException("Không tìm thấy sản phẩm");
+        }
     }
 
     @PostMapping("")
@@ -46,7 +57,7 @@ public class ProductController {
         if (iProductService.existsByCategoryId(categoryId)) {
             return iProductService.getProductsByCategoryId(categoryId);
         } else {
-            throw new NotFoundException("Không tìm thấy sản phẩm category:" + categoryId);
+            return new ResponseObject("NOT_FOUND","Không tìm thấy sản phẩm",null);
         }
 
     }

@@ -1,5 +1,6 @@
 package nlu.edu.vn.ecommerce.controllers;
 
+import lombok.extern.log4j.Log4j2;
 import nlu.edu.vn.ecommerce.exception.ErrorException;
 import nlu.edu.vn.ecommerce.models.RefreshToken;
 import nlu.edu.vn.ecommerce.models.User;
@@ -24,15 +25,14 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.ConstraintViolation;
-import javax.validation.ConstraintViolationException;
+
 import javax.validation.Valid;
-import javax.validation.Validator;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
+
 
 @RestController
+@Log4j2
 @CrossOrigin(origins = "*", allowedHeaders = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
 @RequestMapping("/api/auth")
 public class AuthController {
@@ -48,8 +48,6 @@ public class AuthController {
     PasswordEncoder passwordEncoder;
     @Autowired
     UserService userService;
-    @Autowired
-    private Validator validator;
 
     @PostMapping("/login")
     @Transactional

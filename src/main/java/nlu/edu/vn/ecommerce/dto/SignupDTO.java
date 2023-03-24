@@ -5,7 +5,6 @@ import lombok.Setter;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
 @Getter
@@ -21,4 +20,5 @@ public class SignupDTO {
     @NotBlank
     @Size(message = "Mật khẩu phải từ 6 kí tự trở lên và tối đa là 20 lí tự",min = 6, max = 20)
     private String password;
+
 }

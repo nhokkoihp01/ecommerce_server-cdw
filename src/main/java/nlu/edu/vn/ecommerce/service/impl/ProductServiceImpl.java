@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProductServiceImpl implements IProductService {
@@ -37,6 +38,11 @@ public class ProductServiceImpl implements IProductService {
     @Override
     public ResponseObject insertProduct(Product product) {
        return  new ResponseObject("ok","thêm thành công",productRepository.save(product));
+    }
+
+    @Override
+    public Optional<Product> getProductById(String id) {
+        return productRepository.findById(id);
     }
 
 }

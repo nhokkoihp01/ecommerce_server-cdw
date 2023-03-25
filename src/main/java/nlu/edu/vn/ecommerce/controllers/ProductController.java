@@ -26,6 +26,7 @@ public class ProductController {
         );
 
     }
+
     @GetMapping("/{id}")
     public ResponseEntity<ResponseObject> findProductById(@PathVariable String id){
         Optional<Product> product = iProductService.getProductById(id);
@@ -60,6 +61,18 @@ public class ProductController {
             return new ResponseObject("NOT_FOUND","Không tìm thấy sản phẩm",null);
         }
 
+    }
+    @GetMapping("")
+    public ResponseEntity<?> searchProducts(
+            @RequestParam(name = "search") String search,
+            @RequestParam(name = "maxResult", defaultValue = "0") int maxResult
+    ) {
+        List<Product> products = iProductService.findProductBySearch(search, maxResult);
+        if (!products.isEmpty()) {
+            return ResponseEntity.ok().body(new ResponseObject("oke","thành công",products));
+        } else {
+            return ResponseEntity.ok().body(new ResponseObject("failed","Không tìm thấy sản phẩm",null));
+        }
     }
 
 

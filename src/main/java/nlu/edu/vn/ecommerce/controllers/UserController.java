@@ -28,7 +28,7 @@ public class UserController {
             return ResponseEntity.ok().body(UserDTO.from(user));
         }
         else{
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+            return ResponseEntity.ok().body(null);
         }
     }
 

@@ -10,7 +10,7 @@ import org.springframework.http.HttpStatus;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ErrorException {
+public class ErrorException  {
     private HttpStatus status;
     private String message;
 

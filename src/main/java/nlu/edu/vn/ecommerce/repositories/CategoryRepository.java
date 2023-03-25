@@ -7,5 +7,8 @@ import java.util.List;
 
 public interface CategoryRepository extends MongoRepository<Category,String> {
     List<Category> findCategoryByName(String name);
+    List<Category> findByNameContainingIgnoreCase(String name);
+    Category findByName(String name);
+    List<Category> findByNameContaining(String name);
 
 }

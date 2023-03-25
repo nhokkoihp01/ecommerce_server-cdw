@@ -1,6 +1,8 @@
 package nlu.edu.vn.ecommerce.repositories;
 
 import nlu.edu.vn.ecommerce.models.Product;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
@@ -11,5 +13,11 @@ public interface ProductRepository extends MongoRepository<Product, String> {
     List<Product> findByCategoryId(String categoryId);
     boolean existsByCategoryId(String categoryId);
     List<Product> findProductByName(String name);
+
+    List<Product> findByNameContainingIgnoreCase(String name);
+    List<Product> findByCategoryIdIn(List<String> categoryIds);
+
+    Page<Product> findByCategoryIdIn(List<String> categoryIds, Pageable pageable);
+
 
 }

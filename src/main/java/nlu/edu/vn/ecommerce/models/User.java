@@ -58,6 +58,15 @@ public class User implements UserDetails {
         this.password = password;
     }
 
+    public User(@NonNull String username, @NonNull String email, @NonNull String password, @NonNull String firstName, @NonNull String lastName, @NonNull String numberPhone) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.numberPhone = numberPhone;
+    }
+
     public User(@NonNull String username, @NonNull String email, @NonNull String password, @NonNull String image, @NonNull String firstName, @NonNull String lastName, @NonNull String numberPhone) {
         this.username = username;
         this.email = email;

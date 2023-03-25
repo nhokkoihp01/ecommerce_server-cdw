@@ -14,5 +14,6 @@ public interface IProductService {
     List<Product> findProductByName(String name);
     ResponseObject insertProduct(Product product);
     Optional<Product> getProductById(String id);
+    List<Product> findProductBySearch(String search, int maxResult);
 
 }

@@ -2,6 +2,7 @@ package nlu.edu.vn.ecommerce.controllers;
 
 import lombok.extern.log4j.Log4j2;
 import nlu.edu.vn.ecommerce.exception.ErrorException;
+import nlu.edu.vn.ecommerce.exception.ResponseObject;
 import nlu.edu.vn.ecommerce.models.RefreshToken;
 import nlu.edu.vn.ecommerce.models.User;
 import nlu.edu.vn.ecommerce.dto.LoginDTO;
@@ -66,8 +67,8 @@ public class AuthController {
 
             return ResponseEntity.ok(new TokenDTO(user.getId(), accessToken, refreshTokenString));
         }
-        catch (AuthenticationException e){
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorException(HttpStatus.UNAUTHORIZED,"unauthorized"));
+        catch (Exception e){
+            return ResponseEntity.ok().body(new ErrorException(HttpStatus.UNAUTHORIZED,"unauthorized"));
         }
     }
 
@@ -75,19 +76,18 @@ public class AuthController {
     @Transactional
     public ResponseEntity<?> signup(@Valid @RequestBody SignupDTO dto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()){
-            return ResponseEntity.badRequest().body(new ErrorException(HttpStatus.NOT_FOUND, bindingResult.getAllErrors().get(0).getDefaultMessage()));
+            return ResponseEntity.ok().body(new ResponseObject("ALL_ERROR","Mât", bindingResult.getAllErrors().get(0).getDefaultMessage()));
         }
-
 
         if(userRepository.existsByUsername(dto.getUsername())){
-            return ResponseEntity.badRequest().body(new ErrorException(HttpStatus.NOT_FOUND,"Tài khoản đã tồn tại"));
+            return ResponseEntity.ok().body(new ResponseObject("USERNAME_FOUNDED","Tài khoản đã tồn tại",null));
         }
         if(userRepository.existsByEmail(dto.getEmail())){
-            return ResponseEntity.badRequest().body(new ErrorException(HttpStatus.NOT_FOUND,"Email đã tồn tại"));
+            return ResponseEntity.ok().body(new  ResponseObject("EMAIL_FOUNDED","Email đã tồn tại",null));
         }
 
 
-        User user = new User(dto.getUsername(), dto.getEmail(), passwordEncoder.encode(dto.getPassword()));
+        User user = new User(dto.getUsername(), dto.getEmail(), passwordEncoder.encode(dto.getPassword()),dto.getFirstName(), dto.getLastName(), dto.getNumberPhone());
         List<String> roles = new ArrayList<>();
         roles.add("ROLE_USER");
         user.setRoles(roles);

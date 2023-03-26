@@ -71,7 +71,18 @@ public class ProductController {
         if (!products.isEmpty()) {
             return ResponseEntity.ok().body(new ResponseObject("oke","thành công",products));
         } else {
-            return ResponseEntity.ok().body(new ResponseObject("failed","Không tìm thấy sản phẩm",null));
+            return ResponseEntity.ok().body(new ResponseObject("NOT_FOUND","Không tìm thấy sản phẩm",null));
+        }
+    }
+    @GetMapping("/filter/price")
+    public ResponseEntity<?> getProductByFilterPrice(@RequestParam double minPrice, @RequestParam double maxPrice) {
+        List<Product> products = iProductService.getProductByFilterPrice(minPrice, maxPrice);
+        if(!products.isEmpty()){
+            return ResponseEntity.ok().body(new ResponseObject("oke","thành công",products));
+
+        }
+        else{
+            return ResponseEntity.ok().body(new ResponseObject("NOT_FOUND","Không tìm thấy sản phẩm",null));
         }
     }
 

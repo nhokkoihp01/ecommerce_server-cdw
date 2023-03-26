@@ -15,5 +15,6 @@ public interface IProductService {
     ResponseObject insertProduct(Product product);
     Optional<Product> getProductById(String id);
     List<Product> findProductBySearch(String search, int maxResult);
+    List<Product> getProductByFilterPrice(double minPrice, double maxPrice);
 
 }

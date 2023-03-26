@@ -75,5 +75,10 @@ public class ProductServiceImpl implements IProductService {
         return Collections.emptyList();
     }
 
+    @Override
+    public List<Product> getProductByFilterPrice(double minPrice, double maxPrice) {
+        return productRepository.findByNewPriceBetween(minPrice, maxPrice);
+    }
+
 
 }

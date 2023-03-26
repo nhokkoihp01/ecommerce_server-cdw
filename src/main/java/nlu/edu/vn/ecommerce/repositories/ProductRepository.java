@@ -11,13 +11,18 @@ import java.util.List;
 @Repository
 public interface ProductRepository extends MongoRepository<Product, String> {
     List<Product> findByCategoryId(String categoryId);
+
     boolean existsByCategoryId(String categoryId);
+
     List<Product> findProductByName(String name);
 
     List<Product> findByNameContainingIgnoreCase(String name);
+
     List<Product> findByCategoryIdIn(List<String> categoryIds);
 
     Page<Product> findByCategoryIdIn(List<String> categoryIds, Pageable pageable);
+
+    List<Product> findByNewPriceBetween(double minPrice, double maxPrice);
 
 
 }

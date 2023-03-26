@@ -25,4 +25,5 @@ public interface ProductRepository extends MongoRepository<Product, String> {
     List<Product> findByNewPriceBetween(double minPrice, double maxPrice);
 
 
+
 }

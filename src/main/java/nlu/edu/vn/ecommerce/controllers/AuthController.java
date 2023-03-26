@@ -76,7 +76,7 @@ public class AuthController {
     @Transactional
     public ResponseEntity<?> signup(@Valid @RequestBody SignupDTO dto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()){
-            return ResponseEntity.ok().body(new ResponseObject("ALL_ERROR","Mât", bindingResult.getAllErrors().get(0).getDefaultMessage()));
+            return ResponseEntity.ok().body(new ResponseObject("ALL_ERROR","Error", bindingResult.getAllErrors().get(0).getDefaultMessage()));
         }
 
         if(userRepository.existsByUsername(dto.getUsername())){

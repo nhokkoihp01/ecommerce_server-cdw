@@ -16,6 +16,11 @@ public class CartServiceImpl implements ICartService {
     @Autowired
     private CartRepository cartRepository;
 
+    @Override
+    public List<Cart> getCartByUserId(String userId) {
+        return cartRepository.getCartByUserId(userId);
+
+    }
 
     @Override
     public void addToCart(String userId, CartItem cartItem) {
@@ -73,4 +78,6 @@ public class CartServiceImpl implements ICartService {
         }
         return null;
     }
+
+
 }

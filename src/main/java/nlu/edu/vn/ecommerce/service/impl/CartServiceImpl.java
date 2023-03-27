@@ -1,8 +1,12 @@
 package nlu.edu.vn.ecommerce.service.impl;
 
+import lombok.extern.log4j.Log4j2;
+import nlu.edu.vn.ecommerce.dto.CartDTO;
 import nlu.edu.vn.ecommerce.models.Cart;
 import nlu.edu.vn.ecommerce.models.CartItem;
+import nlu.edu.vn.ecommerce.models.Order;
 import nlu.edu.vn.ecommerce.repositories.CartRepository;
+import nlu.edu.vn.ecommerce.repositories.OrderRepository;
 import nlu.edu.vn.ecommerce.service.ICartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,15 +16,20 @@ import java.util.Iterator;
 import java.util.List;
 
 @Service
+@Log4j2
 public class CartServiceImpl implements ICartService {
     @Autowired
     private CartRepository cartRepository;
+    @Autowired
+    private OrderRepository orderRepository;
 
     @Override
     public List<Cart> getCartByUserId(String userId) {
         return cartRepository.getCartByUserId(userId);
 
     }
+
+
 
     @Override
     public void addToCart(String userId, CartItem cartItem) {

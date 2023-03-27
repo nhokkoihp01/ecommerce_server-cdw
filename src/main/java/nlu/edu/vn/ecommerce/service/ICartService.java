@@ -1,5 +1,6 @@
 package nlu.edu.vn.ecommerce.service;
 
+import nlu.edu.vn.ecommerce.dto.CartDTO;
 import nlu.edu.vn.ecommerce.models.Cart;
 import nlu.edu.vn.ecommerce.models.CartItem;
 
@@ -10,5 +11,6 @@ public interface ICartService {
     boolean removeItemFromCart(String userId, String productId);
     CartItem updateCartItemQuantityByProductIdAndUserId(String productId, String userId, int quantity);
     List<Cart> getCartByUserId(String userId);
+
 
 }

@@ -84,15 +84,21 @@ public class CartServiceImpl implements ICartService {
         }
         return false;
     }
-
     @Override
     public CartItem updateCartItemQuantityByProductIdAndUserId(String productId, String userId, int quantity) {
         Cart cart = cartRepository.findByUserId(userId);
         List<CartItem> cartItems = cart.getCartItems();
+        double total = 0.0;
         for (CartItem item : cartItems) {
             if (item.getProductId().equals(productId)) {
                 item.setQuantity(quantity);
-                cartRepository.save(cart);
+            }
+            total += item.getNewPrice() * item.getQuantity();
+        }
+        cart.setTotalPrice(total);
+        cartRepository.save(cart);
+        for (CartItem item : cartItems) {
+            if (item.getProductId().equals(productId)) {
                 return item;
             }
         }

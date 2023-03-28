@@ -16,5 +16,6 @@ public class Cart {
     private String id;
     private String userId;
     private List<CartItem> cartItems;
+    private double totalPrice;
 
 }

@@ -51,6 +51,9 @@ public class CartServiceImpl implements ICartService {
         if (!found) {
             cartItems.add(cartItem);
         }
+        double totalPrice = cartItems.stream().mapToDouble(item -> item.getNewPrice() * item.getQuantity()).sum();
+        cart.setTotalPrice(totalPrice);
+
         cart.setCartItems(cartItems);
         cartRepository.save(cart);
     }
@@ -66,6 +69,14 @@ public class CartServiceImpl implements ICartService {
                 if (item.getProductId().equals(productId)) {
                     iterator.remove();
                     cart.setCartItems(items);
+
+                    double total = 0.0;
+                    for (CartItem i : items) {
+                        total += i.getNewPrice() * i.getQuantity();
+                    }
+                    cart.setTotalPrice(total);
+                    cart.setCartItems(items);
+
                     cartRepository.save(cart);
                     return true;
                 }

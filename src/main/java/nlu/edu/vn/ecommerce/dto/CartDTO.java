@@ -17,7 +17,6 @@ public class CartDTO {
     @NonNull
     private List<CartItem> cartItems;
     private double totalPrice;
-    private int totalQuantity;
     @NonNull
     private String address;
 

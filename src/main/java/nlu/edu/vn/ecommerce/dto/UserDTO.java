@@ -16,6 +16,7 @@ public class UserDTO {
     private String email;
     private String image;
     private String firstName;
+    private String lastName;
     private String numberPhone;
     private List<String> roles;
 
@@ -27,6 +28,7 @@ public class UserDTO {
                 .image(user.getImage())
                 .email(user.getEmail())
                 .firstName(user.getFirstName())
+                .lastName(user.getLastName())
                 .numberPhone(user.getNumberPhone())
                 .roles(user.getRoles())
                 .build());

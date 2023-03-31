@@ -21,7 +21,5 @@ public class Order {
     @NonNull
     private double totalPrice;
     @NonNull
-    private int totalQuantity;
-    @NonNull
     private String address;
 }

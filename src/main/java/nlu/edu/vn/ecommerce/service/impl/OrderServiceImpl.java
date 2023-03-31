@@ -24,7 +24,6 @@ public class OrderServiceImpl implements IOrderService {
             order.setUserId(userId);
             order.setCartItems(cartDTO.getCartItems());
             order.setTotalPrice(cartDTO.getTotalPrice());
-            order.setTotalQuantity(cartDTO.getTotalQuantity());
             order.setAddress(cartDTO.getAddress());
             orderRepository.save(order);
             cartRepository.deleteByUserId(userId);

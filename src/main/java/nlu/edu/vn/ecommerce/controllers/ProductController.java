@@ -7,6 +7,7 @@ import nlu.edu.vn.ecommerce.service.IProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -39,14 +40,15 @@ public class ProductController {
     }
 
     @PostMapping("")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<ResponseObject> insertProduct(@RequestBody Product product) {
         List<Product> products = iProductService.findProductByName(product.getName().trim());
         if (products.size() > 0) {
-            return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body(
-                    new ResponseObject("failed", "Sản phẩm đã tồn tại", null)
+            return ResponseEntity.ok() .body(
+                    new ResponseObject("400", "Sản phẩm đã tồn tại", null)
             );
         }
-        return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body(
+        return ResponseEntity.status(HttpStatus.OK).body(
                 iProductService.insertProduct(product)
         );
 

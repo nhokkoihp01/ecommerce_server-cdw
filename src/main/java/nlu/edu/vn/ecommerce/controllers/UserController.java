@@ -20,8 +20,7 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
     @Autowired
     private UserRepository userRepository;
-    @Autowired
-    private AuthenticationManager authenticationManager;
+
     @Autowired
     private IUserService iUserService;
 

@@ -8,7 +8,6 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class UpdateUserDTO {
-    private String password;
     private String image;
     private String firstName;
     private String lastName;

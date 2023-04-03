@@ -3,7 +3,6 @@ package nlu.edu.vn.ecommerce.controllers;
 import nlu.edu.vn.ecommerce.dto.UpdateUserDTO;
 import nlu.edu.vn.ecommerce.dto.UserDTO;
 import nlu.edu.vn.ecommerce.exception.MyException;
-import nlu.edu.vn.ecommerce.exception.ResponseObject;
 import nlu.edu.vn.ecommerce.models.User;
 import nlu.edu.vn.ecommerce.repositories.UserRepository;
 import nlu.edu.vn.ecommerce.service.IUserService;
@@ -11,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 

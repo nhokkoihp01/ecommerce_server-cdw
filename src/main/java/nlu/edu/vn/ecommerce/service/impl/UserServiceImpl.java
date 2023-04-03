@@ -2,8 +2,7 @@ package nlu.edu.vn.ecommerce.service.impl;
 
 import lombok.extern.log4j.Log4j2;
 import nlu.edu.vn.ecommerce.dto.UpdateUserDTO;
-import nlu.edu.vn.ecommerce.dto.UserDTO;
-import nlu.edu.vn.ecommerce.exception.NotFoundException;
+
 import nlu.edu.vn.ecommerce.models.User;
 import nlu.edu.vn.ecommerce.repositories.UserRepository;
 import nlu.edu.vn.ecommerce.service.IUserService;
@@ -32,7 +31,6 @@ public class UserServiceImpl implements IUserService {
             return false;
         }
         User user = optionalUser.get();
-        user.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
         user.setFirstName(updatedUser.getFirstName());
         user.setLastName(updatedUser.getLastName());
         user.setImage(updatedUser.getImage());

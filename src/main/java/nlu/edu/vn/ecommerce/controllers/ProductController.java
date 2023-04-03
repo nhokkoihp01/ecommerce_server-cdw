@@ -29,12 +29,11 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ResponseObject> findProductById(@PathVariable String id){
+    public ResponseEntity<ResponseObject> findProductById(@PathVariable String id) {
         Optional<Product> product = iProductService.getProductById(id);
-        if(product.isPresent()){
-            return  ResponseEntity.ok().body(new ResponseObject("oke","Thành công",product));
-        }
-        else{
+        if (product.isPresent()) {
+            return ResponseEntity.ok().body(new ResponseObject("oke", "Thành công", product));
+        } else {
             throw new NotFoundException("Không tìm thấy sản phẩm");
         }
     }
@@ -44,7 +43,7 @@ public class ProductController {
     public ResponseEntity<ResponseObject> insertProduct(@RequestBody Product product) {
         List<Product> products = iProductService.findProductByName(product.getName().trim());
         if (products.size() > 0) {
-            return ResponseEntity.ok() .body(
+            return ResponseEntity.ok().body(
                     new ResponseObject("400", "Sản phẩm đã tồn tại", null)
             );
         }
@@ -54,16 +53,28 @@ public class ProductController {
 
     }
 
+    @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public ResponseEntity<?> updateProduct(@PathVariable("id") String productId, @RequestBody Product product) {
+        boolean isUpdated = iProductService.updateProductById(productId, product);
+        if (isUpdated) {
+            return ResponseEntity.ok().body(new ResponseObject("200", "Thành công", null));
+        } else {
+            return ResponseEntity.ok().body(new ResponseObject("400", "Thất bại", null));
+        }
+    }
+
 
     @GetMapping("/category/{categoryId}")
     public ResponseObject getProductsByCategory(@PathVariable String categoryId) {
         if (iProductService.existsByCategoryId(categoryId)) {
             return iProductService.getProductsByCategoryId(categoryId);
         } else {
-            return new ResponseObject("NOT_FOUND","Không tìm thấy sản phẩm",null);
+            return new ResponseObject("NOT_FOUND", "Không tìm thấy sản phẩm", null);
         }
 
     }
+
     @GetMapping("")
     public ResponseEntity<?> searchProducts(
             @RequestParam(name = "search") String search,
@@ -71,20 +82,20 @@ public class ProductController {
     ) {
         List<Product> products = iProductService.findProductBySearch(search, maxResult);
         if (!products.isEmpty()) {
-            return ResponseEntity.ok().body(new ResponseObject("oke","thành công",products));
+            return ResponseEntity.ok().body(new ResponseObject("oke", "thành công", products));
         } else {
-            return ResponseEntity.ok().body(new ResponseObject("NOT_FOUND","Không tìm thấy sản phẩm",null));
+            return ResponseEntity.ok().body(new ResponseObject("NOT_FOUND", "Không tìm thấy sản phẩm", null));
         }
     }
+
     @GetMapping("/filter/price")
     public ResponseEntity<?> getProductByFilterPrice(@RequestParam double minPrice, @RequestParam double maxPrice) {
         List<Product> products = iProductService.getProductByFilterPrice(minPrice, maxPrice);
-        if(!products.isEmpty()){
-            return ResponseEntity.ok().body(new ResponseObject("oke","thành công",products));
+        if (!products.isEmpty()) {
+            return ResponseEntity.ok().body(new ResponseObject("oke", "thành công", products));
 
-        }
-        else{
-            return ResponseEntity.ok().body(new ResponseObject("NOT_FOUND","Không tìm thấy sản phẩm",null));
+        } else {
+            return ResponseEntity.ok().body(new ResponseObject("NOT_FOUND", "Không tìm thấy sản phẩm", null));
         }
     }
 

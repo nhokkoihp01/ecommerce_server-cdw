@@ -10,6 +10,7 @@ import java.util.Optional;
 public interface IProductService {
     ResponseObject getProductsByCategoryId(String categoryId);
     boolean existsByCategoryId(String categoryId);
+    boolean updateProductById(String productId, Product product);
     List<Product> getAllProducts();
     List<Product> findProductByName(String name);
     ResponseObject insertProduct(Product product);

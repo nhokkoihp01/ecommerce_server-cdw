@@ -35,6 +35,27 @@ public class ProductServiceImpl implements IProductService {
     }
 
     @Override
+    public boolean updateProductById(String productId, Product product) {
+        Optional<Product> optionalProduct = productRepository.findById(productId);
+
+        if (optionalProduct.isPresent()) {
+            Product existingProduct = optionalProduct.get();
+            existingProduct.setName(product.getName());
+            existingProduct.setImage(product.getImage());
+            existingProduct.setNewPrice(product.getNewPrice());
+            existingProduct.setOldPrice(product.getOldPrice());
+            existingProduct.setDescription(product.getDescription());
+            existingProduct.setQuantity(product.getQuantity());
+            existingProduct.setSale(product.getSale());
+            existingProduct.setCategoryId(product.getCategoryId());
+            productRepository.save(existingProduct);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @Override
     public List<Product> getAllProducts() {
         return productRepository.findAll();
     }
@@ -74,7 +95,6 @@ public class ProductServiceImpl implements IProductService {
 
         return Collections.emptyList();
     }
-
 
 
     @Override

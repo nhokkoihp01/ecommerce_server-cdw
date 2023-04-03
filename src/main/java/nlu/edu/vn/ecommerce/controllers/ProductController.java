@@ -63,6 +63,16 @@ public class ProductController {
             return ResponseEntity.ok().body(new ResponseObject("400", "Thất bại", null));
         }
     }
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public ResponseEntity<?> deleteProduct(@PathVariable("id") String productId) {
+        boolean isDeleted = iProductService.deleteProductById(productId);
+        if (isDeleted) {
+            return ResponseEntity.ok().body(new ResponseObject("200", "Thành công", null));
+        } else {
+            return ResponseEntity.ok().body(new ResponseObject("400", "Thất bại", null));
+        }
+    }
 
 
     @GetMapping("/category/{categoryId}")

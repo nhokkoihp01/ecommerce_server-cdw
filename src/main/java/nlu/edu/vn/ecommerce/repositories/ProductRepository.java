@@ -12,6 +12,7 @@ import java.util.Optional;
 @Repository
 public interface ProductRepository extends MongoRepository<Product, String> {
     List<Product> findByCategoryId(String categoryId);
+
     Optional<Product> findById(String id);
 
     boolean existsByCategoryId(String categoryId);
@@ -25,7 +26,6 @@ public interface ProductRepository extends MongoRepository<Product, String> {
     Page<Product> findByCategoryIdIn(List<String> categoryIds, Pageable pageable);
 
     List<Product> findByNewPriceBetween(double minPrice, double maxPrice);
-
 
 
 }

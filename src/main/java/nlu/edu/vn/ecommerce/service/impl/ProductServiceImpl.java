@@ -56,6 +56,16 @@ public class ProductServiceImpl implements IProductService {
     }
 
     @Override
+    public boolean deleteProductById(String productId) {
+        if (productRepository.existsById(productId)) {
+            productRepository.deleteById(productId);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @Override
     public List<Product> getAllProducts() {
         return productRepository.findAll();
     }

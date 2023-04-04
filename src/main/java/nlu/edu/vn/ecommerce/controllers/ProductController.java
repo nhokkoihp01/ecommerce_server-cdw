@@ -21,9 +21,9 @@ public class ProductController {
 
 
     @GetMapping("/all")
-    public ResponseEntity<?> getAllProducts() {
+    public ResponseEntity<?> getAllProducts(@RequestParam(name = "maxResult",defaultValue = "0") int maxResult) {
         return ResponseEntity.ok().body(
-                new ResponseObject("oke", "thành công", iProductService.getAllProducts())
+                new ResponseObject("oke", "thành công", iProductService.getAllProducts(maxResult))
         );
 
     }

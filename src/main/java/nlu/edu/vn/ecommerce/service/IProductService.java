@@ -16,7 +16,7 @@ public interface IProductService {
 
     boolean deleteProductById(String productId);
 
-    List<Product> getAllProducts();
+    List<Product> getAllProducts(int maxResult);
 
     List<Product> findProductByName(String name);
 

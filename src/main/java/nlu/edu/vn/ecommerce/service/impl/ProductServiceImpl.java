@@ -66,8 +66,12 @@ public class ProductServiceImpl implements IProductService {
     }
 
     @Override
-    public List<Product> getAllProducts() {
-        return productRepository.findAll();
+    public List<Product> getAllProducts(int maxResult) {
+        List<Product> productList = productRepository.findAllByOrderByIdDesc();
+        if ( maxResult > 0) {
+            return productList.stream().limit(maxResult).collect(Collectors.toList());
+        }
+        return productList;
     }
 
     @Override

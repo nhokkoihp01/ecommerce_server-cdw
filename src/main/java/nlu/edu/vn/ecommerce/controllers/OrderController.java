@@ -2,6 +2,7 @@ package nlu.edu.vn.ecommerce.controllers;
 
 import nlu.edu.vn.ecommerce.dto.CartDTO;
 import nlu.edu.vn.ecommerce.exception.ResponseObject;
+import nlu.edu.vn.ecommerce.models.Order;
 import nlu.edu.vn.ecommerce.models.User;
 import nlu.edu.vn.ecommerce.service.IOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RequestMapping("/api/order")
 @RestController
@@ -27,5 +30,15 @@ public class OrderController {
             return ResponseEntity.ok().body(new ResponseObject("error","Không có sản phẩm thanh toán",null));
 
         }
+    }
+    @GetMapping("/{userId}")
+    @PreAuthorize("#user.id == #userId")
+    public ResponseEntity<?> getOrdersByUserId(@AuthenticationPrincipal User user,@PathVariable("userId") String userId) {
+        List<Order> orders = iOrderService.getOrdersByUserId(userId);
+        if(orders == null){
+            return ResponseEntity.ok().body(new ResponseObject("400","failed",null));
+        }
+        return ResponseEntity.ok().body(new ResponseObject("200","Thành công",orders));
+
     }
 }

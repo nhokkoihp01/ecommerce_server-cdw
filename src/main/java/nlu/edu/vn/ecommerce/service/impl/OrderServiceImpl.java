@@ -9,6 +9,8 @@ import nlu.edu.vn.ecommerce.service.IOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class OrderServiceImpl implements IOrderService {
     @Autowired
@@ -32,5 +34,10 @@ public class OrderServiceImpl implements IOrderService {
         }
         return false;
 
+    }
+
+    @Override
+    public List<Order> getOrdersByUserId(String userId) {
+        return orderRepository.findByUserId(userId);
     }
 }

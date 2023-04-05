@@ -9,6 +9,11 @@ import nlu.edu.vn.ecommerce.service.IOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -27,6 +32,12 @@ public class OrderServiceImpl implements IOrderService {
             order.setCartItems(cartDTO.getCartItems());
             order.setTotalPrice(cartDTO.getTotalPrice());
             order.setAddress(cartDTO.getAddress());
+
+            LocalDateTime now = LocalDateTime.now();
+            Instant instant = now.toInstant(ZoneOffset.UTC);
+            long timestamp = instant.toEpochMilli();
+            order.setCreatedAt(timestamp);
+
             orderRepository.save(order);
             cartRepository.deleteByUserId(userId);
             return true;

@@ -4,6 +4,7 @@ import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+
 import java.util.List;
 
 @Document("order")
@@ -22,4 +23,7 @@ public class Order {
     private double totalPrice;
     @NonNull
     private String address;
+    @NonNull
+    private long createdAt;
+
 }

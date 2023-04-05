@@ -1,4 +1,4 @@
-package nlu.edu.vn.ecommerce.dto;
+package nlu.edu.vn.ecommerce.request;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -9,7 +9,7 @@ import javax.validation.constraints.Size;
 
 @Getter
 @Setter
-public class SignupDTO {
+public class SignupRequest {
     @NotBlank
     @Size(message = "Tài khoản phải từ 3 kí tự trở lên và tối đa là 30 kí tự",min = 3, max = 30)
     private String username;

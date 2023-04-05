@@ -5,21 +5,19 @@ import nlu.edu.vn.ecommerce.exception.ErrorException;
 import nlu.edu.vn.ecommerce.exception.ResponseObject;
 import nlu.edu.vn.ecommerce.models.RefreshToken;
 import nlu.edu.vn.ecommerce.models.User;
-import nlu.edu.vn.ecommerce.dto.LoginDTO;
-import nlu.edu.vn.ecommerce.dto.SignupDTO;
 import nlu.edu.vn.ecommerce.dto.TokenDTO;
 import nlu.edu.vn.ecommerce.jwt.JwtHelper;
 import nlu.edu.vn.ecommerce.repositories.RefreshTokenRepository;
 import nlu.edu.vn.ecommerce.repositories.UserRepository;
+import nlu.edu.vn.ecommerce.request.LoginRequest;
+import nlu.edu.vn.ecommerce.request.SignupRequest;
 import nlu.edu.vn.ecommerce.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
@@ -52,9 +50,9 @@ public class AuthController {
 
     @PostMapping("/login")
     @Transactional
-    public ResponseEntity<?> login(@Valid @RequestBody LoginDTO dto) {
+    public ResponseEntity<?> login(@Valid @RequestBody LoginRequest request) {
         try {
-            Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(dto.getUsername(), dto.getPassword()));
+            Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
             SecurityContextHolder.getContext().setAuthentication(authentication);
             User user = (User) authentication.getPrincipal();
 
@@ -74,20 +72,20 @@ public class AuthController {
 
     @PostMapping("signup")
     @Transactional
-    public ResponseEntity<?> signup(@Valid @RequestBody SignupDTO dto, BindingResult bindingResult) {
+    public ResponseEntity<?> signup(@Valid @RequestBody SignupRequest request, BindingResult bindingResult) {
         if (bindingResult.hasErrors()){
             return ResponseEntity.ok().body(new ResponseObject("ALL_ERROR","Error", bindingResult.getAllErrors().get(0).getDefaultMessage()));
         }
 
-        if(userRepository.existsByUsername(dto.getUsername())){
+        if(userRepository.existsByUsername(request.getUsername())){
             return ResponseEntity.ok().body(new ResponseObject("USERNAME_FOUNDED","Tài khoản đã tồn tại",null));
         }
-        if(userRepository.existsByEmail(dto.getEmail())){
+        if(userRepository.existsByEmail(request.getEmail())){
             return ResponseEntity.ok().body(new  ResponseObject("EMAIL_FOUNDED","Email đã tồn tại",null));
         }
 
 
-        User user = new User(dto.getUsername(), dto.getEmail(), passwordEncoder.encode(dto.getPassword()),dto.getFirstName(), dto.getLastName(), dto.getNumberPhone());
+        User user = new User(request.getUsername(), request.getEmail(), passwordEncoder.encode(request.getPassword()),request.getFirstName(), request.getLastName(), request.getNumberPhone());
         List<String> roles = new ArrayList<>();
         roles.add("ROLE_USER");
         user.setRoles(roles);

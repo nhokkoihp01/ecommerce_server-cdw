@@ -2,6 +2,7 @@ package nlu.edu.vn.ecommerce.service.impl;
 
 import lombok.extern.log4j.Log4j2;
 
+import nlu.edu.vn.ecommerce.dto.UserDTO;
 import nlu.edu.vn.ecommerce.models.User;
 import nlu.edu.vn.ecommerce.repositories.UserRepository;
 import nlu.edu.vn.ecommerce.request.UpdateUserRequest;
@@ -10,7 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Log4j2
@@ -54,5 +57,12 @@ public class UserServiceImpl implements IUserService {
         user.get().setPassword(passwordEncoder.encode(newPassword));
         userRepository.save(user.get());
         return true;
+    }
+
+    @Override
+    public List<UserDTO> getAllUser() {
+        List<User> users = userRepository.findAll();
+        List<UserDTO> userDTOs = users.stream().map(UserDTO::fromToUserDTO).collect(Collectors.toList());
+        return userDTOs;
     }
 }

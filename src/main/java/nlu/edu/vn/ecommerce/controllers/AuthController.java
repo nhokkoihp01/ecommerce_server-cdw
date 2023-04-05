@@ -32,7 +32,6 @@ import java.util.List;
 
 @RestController
 @Log4j2
-@CrossOrigin(origins = "*", allowedHeaders = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
 @RequestMapping("/api/auth")
 public class AuthController {
     @Autowired

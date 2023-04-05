@@ -16,6 +16,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/users")
@@ -34,6 +35,18 @@ public class UserController {
             return ResponseEntity.ok().body(null);
         }
     }
+
+    @GetMapping("")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public ResponseEntity<?> getAllUser() {
+        List<UserDTO> userList = iUserService.getAllUser();
+        if (userList != null) {
+            return ResponseEntity.ok().body(new ResponseObject("200", "Thành công", userList));
+        } else {
+            return ResponseEntity.ok().body(new ResponseObject("400", "Thành công", null));
+        }
+    }
+
 
     @GetMapping("/{id}")
     @PreAuthorize("#user.id == #id")

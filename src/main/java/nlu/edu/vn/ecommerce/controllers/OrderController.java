@@ -22,23 +22,29 @@ public class OrderController {
 
     @PostMapping("/payment")
     @PreAuthorize("#user.id == #userId")
-    public ResponseEntity<?> payment(@AuthenticationPrincipal User user, @RequestParam("userId") String userId, @RequestBody CartDTO cartDTO){
-        if(iOrderService.orderPayment(userId, cartDTO)){
-            return ResponseEntity.ok().body(new ResponseObject("oke","Thanh toán thành công",null));
-        }
-        else{
-            return ResponseEntity.ok().body(new ResponseObject("error","Không có sản phẩm thanh toán",null));
+    public ResponseEntity<?> payment(@AuthenticationPrincipal User user, @RequestParam("userId") String userId, @RequestBody CartDTO cartDTO) {
+        if (iOrderService.orderPayment(userId, cartDTO)) {
+            return ResponseEntity.ok().body(new ResponseObject("oke", "Thanh toán thành công", null));
+        } else {
+            return ResponseEntity.ok().body(new ResponseObject("error", "Không có sản phẩm thanh toán", null));
 
         }
     }
+
     @GetMapping("/{userId}")
     @PreAuthorize("#user.id == #userId")
-    public ResponseEntity<?> getOrdersByUserId(@AuthenticationPrincipal User user,@PathVariable("userId") String userId) {
+    public ResponseEntity<?> getOrdersByUserId(@AuthenticationPrincipal User user, @PathVariable("userId") String userId) {
         List<Order> orders = iOrderService.getOrdersByUserId(userId);
-        if(orders == null){
-            return ResponseEntity.ok().body(new ResponseObject("400","failed",null));
+        if (orders == null) {
+            return ResponseEntity.ok().body(new ResponseObject("400", "failed", null));
         }
-        return ResponseEntity.ok().body(new ResponseObject("200","Thành công",orders));
+        return ResponseEntity.ok().body(new ResponseObject("200", "Thành công", orders));
 
+    }
+
+    @GetMapping("")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public ResponseEntity<?> getAllOrders() {
+        return ResponseEntity.ok().body(new ResponseObject("200", "Thành công", iOrderService.getAllOrders()));
     }
 }

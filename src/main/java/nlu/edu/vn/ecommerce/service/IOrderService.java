@@ -8,4 +8,5 @@ import java.util.List;
 public interface IOrderService {
     boolean orderPayment(String userId, CartDTO cartDTO);
     List<Order> getOrdersByUserId(String userId);
+    List<Order> getAllOrders();
 }

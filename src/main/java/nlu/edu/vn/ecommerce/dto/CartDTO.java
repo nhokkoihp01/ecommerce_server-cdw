@@ -15,6 +15,13 @@ public class CartDTO {
     @NonNull
     private String userId;
     @NonNull
+    private String name;
+    @NonNull
+    private String email;
+    @NonNull
+    private String numberPhone;
+
+    @NonNull
     private List<CartItem> cartItems;
     private double totalPrice;
     @NonNull

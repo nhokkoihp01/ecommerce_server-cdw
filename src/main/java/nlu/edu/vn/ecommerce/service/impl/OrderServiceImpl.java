@@ -32,6 +32,10 @@ public class OrderServiceImpl implements IOrderService {
             order.setCartItems(cartDTO.getCartItems());
             order.setTotalPrice(cartDTO.getTotalPrice());
             order.setAddress(cartDTO.getAddress());
+            order.setEmail(cartDTO.getEmail());
+            order.setNumberPhone(cartDTO.getNumberPhone());
+            order.setName(cartDTO.getName());
+
 
             LocalDateTime now = LocalDateTime.now();
             Instant instant = now.toInstant(ZoneOffset.UTC);

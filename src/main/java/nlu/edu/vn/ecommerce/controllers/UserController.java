@@ -67,6 +67,16 @@ public class UserController {
             return ResponseEntity.notFound().build();
         }
     }
+    @DeleteMapping("/{userId}")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public ResponseEntity<?> deleteUserById(@PathVariable String userId) {
+        boolean isDeleted = iUserService.deleteUserById(userId);
+        if (isDeleted) {
+            return ResponseEntity.ok().body(new MyException(HttpStatus.OK,"Thành công"));
+        } else {
+            return ResponseEntity.ok().body(new MyException(HttpStatus.NOT_FOUND,"Xóa user không thành công"));
+        }
+    }
 
     @PostMapping("/update/password/{userId}")
     @PreAuthorize("#user.id == #userId")

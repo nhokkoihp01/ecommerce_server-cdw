@@ -44,6 +44,22 @@ public class UserServiceImpl implements IUserService {
         return true;
     }
 
+    @Override
+    public boolean deleteUserById(String userId) {
+        Optional<User> optionalUser = userRepository.findById(userId);
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            if (user.getRoles().contains("ROLE_ADMIN")) {
+                return false;
+            }
+            else{
+                userRepository.delete(user);
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     @Override
     public boolean updatePassword(String userId, String oldPassword, String newPassword) {

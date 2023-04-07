@@ -9,6 +9,7 @@ import java.util.List;
 
 public interface IUserService {
     boolean updateUser(String id, UpdateUserRequest updatedUser) ;
+    boolean deleteUserById(String userId);
     boolean updatePassword(String userId,String oldPassword,String newPassword);
     List<UserDTO> getAllUser();
 

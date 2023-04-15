@@ -43,7 +43,7 @@ public class UserController {
         if (userList != null) {
             return ResponseEntity.ok().body(new ResponseObject("200", "Thành công", userList));
         } else {
-            return ResponseEntity.ok().body(new ResponseObject("400", "Thành công", null));
+            return ResponseEntity.ok().body(new ResponseObject("400", "Không có user nào", null));
         }
     }
 
@@ -74,7 +74,7 @@ public class UserController {
         if (isDeleted) {
             return ResponseEntity.ok().body(new MyException(HttpStatus.OK,"Thành công"));
         } else {
-            return ResponseEntity.ok().body(new MyException(HttpStatus.NOT_FOUND,"Xóa user không thành công"));
+            return ResponseEntity.ok().body(new MyException(HttpStatus.UNAUTHORIZED,"Xóa user không thành công"));
         }
     }
 

@@ -26,6 +26,10 @@ public class Product {
     private int quantity;
     @NonNull
     private int sale;
+    private long createdAt;
+    private long updateAt;
+    private String createBy;
+    private String updateBy;
     @NonNull
     private String categoryId;
 }

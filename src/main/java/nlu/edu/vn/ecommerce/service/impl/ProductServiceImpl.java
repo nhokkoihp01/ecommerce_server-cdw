@@ -11,6 +11,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -35,7 +38,7 @@ public class ProductServiceImpl implements IProductService {
     }
 
     @Override
-    public boolean updateProductById(String productId, Product product) {
+    public boolean updateProductById(String productId, Product product,String userId) {
         Optional<Product> optionalProduct = productRepository.findById(productId);
 
         if (optionalProduct.isPresent()) {
@@ -48,6 +51,13 @@ public class ProductServiceImpl implements IProductService {
             existingProduct.setQuantity(product.getQuantity());
             existingProduct.setSale(product.getSale());
             existingProduct.setCategoryId(product.getCategoryId());
+            existingProduct.setUpdateBy(userId);
+
+            LocalDateTime now = LocalDateTime.now();
+            Instant instant = now.toInstant(ZoneOffset.UTC);
+            long timestamp = instant.toEpochMilli();
+            existingProduct.setUpdateAt(timestamp);
+
             productRepository.save(existingProduct);
             return true;
         } else {
@@ -80,7 +90,12 @@ public class ProductServiceImpl implements IProductService {
     }
 
     @Override
-    public ResponseObject insertProduct(Product product) {
+    public ResponseObject insertProduct(Product product,String userId) {
+        LocalDateTime now = LocalDateTime.now();
+        Instant instant = now.toInstant(ZoneOffset.UTC);
+        long timestamp = instant.toEpochMilli();
+        product.setCreatedAt(timestamp);
+        product.setCreateBy(userId);
         return new ResponseObject("ok", "thêm thành công", productRepository.save(product));
     }
 

@@ -12,7 +12,7 @@ public interface IProductService {
 
     boolean existsByCategoryId(String categoryId);
 
-    boolean updateProductById(String productId, Product product);
+    boolean updateProductById(String productId, Product product,String userId);
 
     boolean deleteProductById(String productId);
 
@@ -20,7 +20,7 @@ public interface IProductService {
 
     List<Product> findProductByName(String name);
 
-    ResponseObject insertProduct(Product product);
+    ResponseObject insertProduct(Product product,String userId);
 
     Optional<Product> getProductById(String id);
 

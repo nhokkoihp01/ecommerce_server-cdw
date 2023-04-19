@@ -21,7 +21,16 @@ public class ProductController {
 
 
     @GetMapping("/all")
-    public ResponseEntity<?> getAllProducts(@RequestParam(name = "maxResult",defaultValue = "0") int maxResult) {
+    public ResponseEntity<?> getAllProducts(@RequestParam(name = "maxResult", defaultValue = "0") int maxResult) {
+        return ResponseEntity.ok().body(
+                new ResponseObject("oke", "thành công", iProductService.getAllProducts(maxResult))
+        );
+
+    }
+
+    @GetMapping("/all/admin")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public ResponseEntity<?> getAllProductsByAdmin(@RequestParam(name = "maxResult", defaultValue = "0") int maxResult) {
         return ResponseEntity.ok().body(
                 new ResponseObject("oke", "thành công", iProductService.getAllProducts(maxResult))
         );
@@ -40,7 +49,7 @@ public class ProductController {
 
     @PostMapping("")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public ResponseEntity<ResponseObject> insertProduct(@RequestBody Product product) {
+    public ResponseEntity<ResponseObject> insertProduct(@RequestBody Product product,@RequestParam("userId") String userId) {
         List<Product> products = iProductService.findProductByName(product.getName().trim());
         if (products.size() > 0) {
             return ResponseEntity.ok().body(
@@ -48,21 +57,22 @@ public class ProductController {
             );
         }
         return ResponseEntity.status(HttpStatus.OK).body(
-                iProductService.insertProduct(product)
+                iProductService.insertProduct(product,userId)
         );
 
     }
 
     @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public ResponseEntity<?> updateProduct(@PathVariable("id") String productId, @RequestBody Product product) {
-        boolean isUpdated = iProductService.updateProductById(productId, product);
+    public ResponseEntity<?> updateProduct(@PathVariable("id") String productId, @RequestBody Product product, @RequestParam String userId) {
+        boolean isUpdated = iProductService.updateProductById(productId, product, userId);
         if (isUpdated) {
             return ResponseEntity.ok().body(new ResponseObject("200", "Thành công", null));
         } else {
             return ResponseEntity.ok().body(new ResponseObject("400", "Thất bại", null));
         }
     }
+
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<?> deleteProduct(@PathVariable("id") String productId) {

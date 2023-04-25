@@ -1,6 +1,8 @@
 package nlu.edu.vn.ecommerce.controllers;
 
 
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import nlu.edu.vn.ecommerce.exception.ErrorException;
 import nlu.edu.vn.ecommerce.exception.MyException;
 import nlu.edu.vn.ecommerce.exception.NotFoundException;
@@ -26,6 +28,9 @@ public class CartController {
 
     @GetMapping("/{userId}")
     @PreAuthorize("#user.id == #userId")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, dataType = "string", paramType = "header")
+    })
     public ResponseEntity<?> getCartByUserId(@AuthenticationPrincipal User user,@PathVariable("userId") String userId) {
         List<Cart> carts = iCartService.getCartByUserId(userId);
         if(!carts.isEmpty()){
@@ -40,12 +45,18 @@ public class CartController {
 
     @PostMapping("/add")
     @PreAuthorize("#user.id == #userId")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, dataType = "string", paramType = "header")
+    })
     public ResponseEntity<?> addToCart(@AuthenticationPrincipal User user, @RequestParam("userId") String userId, @RequestBody CartItem cartItem) {
         iCartService.addToCart(userId, cartItem);
         return ResponseEntity.ok().body(new MyException(HttpStatus.OK, "Thêm sản phẩm vào giở hàng thành công"));
     }
 
     @DeleteMapping("/remove/{userId}/items/{productId}")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, dataType = "string", paramType = "header")
+    })
     @PreAuthorize("#user.id == #userId")
     public ResponseEntity<?> removeItemFromCart(@AuthenticationPrincipal User user,
                                                 @PathVariable("userId") String userId,
@@ -60,6 +71,9 @@ public class CartController {
     }
 
     @PutMapping("/update/items/{productId}")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, dataType = "string", paramType = "header")
+    })
     @PreAuthorize("#user.id == #userId")
     public ResponseEntity<?> updateCartItemQuantity(@AuthenticationPrincipal User user, @PathVariable String productId,
                                                     @RequestParam("userId") String userId,

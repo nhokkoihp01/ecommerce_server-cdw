@@ -1,5 +1,7 @@
 package nlu.edu.vn.ecommerce.controllers;
 
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import nlu.edu.vn.ecommerce.dto.UserDTO;
 import nlu.edu.vn.ecommerce.exception.MyException;
 import nlu.edu.vn.ecommerce.exception.ResponseObject;
@@ -15,7 +17,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
+
 import java.util.List;
 
 @RestController
@@ -38,6 +40,9 @@ public class UserController {
 
     @GetMapping("")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, dataType = "string", paramType = "header")
+    })
     public ResponseEntity<?> getAllUser() {
         List<UserDTO> userList = iUserService.getAllUser();
         if (userList != null) {
@@ -49,12 +54,18 @@ public class UserController {
 
 
     @GetMapping("/{id}")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, dataType = "string", paramType = "header")
+    })
     @PreAuthorize("#user.id == #id")
     public ResponseEntity<?> me(@AuthenticationPrincipal User user, @PathVariable String id) {
         return ResponseEntity.ok().body(UserDTO.from(userRepository.findById(id).orElseThrow()));
     }
 
     @PutMapping("/update/{userId}")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, dataType = "string", paramType = "header")
+    })
     @PreAuthorize("#user.id == #userId")
     public ResponseEntity<?> updateUser(@AuthenticationPrincipal User user,
                                         @PathVariable("userId") String userId,
@@ -68,6 +79,9 @@ public class UserController {
         }
     }
     @DeleteMapping("/{userId}")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, dataType = "string", paramType = "header")
+    })
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<?> deleteUserById(@PathVariable String userId) {
         boolean isDeleted = iUserService.deleteUserById(userId);
@@ -79,6 +93,9 @@ public class UserController {
     }
 
     @PostMapping("/update/password/{userId}")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, dataType = "string", paramType = "header")
+    })
     @PreAuthorize("#user.id == #userId")
     public ResponseEntity<?> updatePassword(@AuthenticationPrincipal User user,
                                             @PathVariable("userId") String userId,

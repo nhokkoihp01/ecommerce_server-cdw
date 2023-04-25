@@ -1,5 +1,7 @@
 package nlu.edu.vn.ecommerce.controllers;
 
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import nlu.edu.vn.ecommerce.dto.CartDTO;
 import nlu.edu.vn.ecommerce.exception.ResponseObject;
 import nlu.edu.vn.ecommerce.models.Order;
@@ -21,6 +23,9 @@ public class OrderController {
 
 
     @PostMapping("/payment")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, dataType = "string", paramType = "header")
+    })
     @PreAuthorize("#user.id == #userId")
     public ResponseEntity<?> payment(@AuthenticationPrincipal User user, @RequestParam("userId") String userId, @RequestBody CartDTO cartDTO) {
         if (iOrderService.orderPayment(userId, cartDTO)) {
@@ -32,6 +37,9 @@ public class OrderController {
     }
 
     @GetMapping("/{userId}")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, dataType = "string", paramType = "header")
+    })
     @PreAuthorize("#user.id == #userId")
     public ResponseEntity<?> getOrdersByUserId(@AuthenticationPrincipal User user, @PathVariable("userId") String userId) {
         List<Order> orders = iOrderService.getOrdersByUserId(userId);
@@ -43,6 +51,9 @@ public class OrderController {
     }
 
     @GetMapping("")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, dataType = "string", paramType = "header")
+    })
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<?> getAllOrders() {
         return ResponseEntity.ok().body(new ResponseObject("200", "Thành công", iOrderService.getAllOrders()));

@@ -61,8 +61,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/v2/api-docs",
                         "/swagger-resources",
                         "/swagger-resources/configuration/ui",
-                        "/swagger-resources/configuration/security").permitAll();
-//                .anyRequest().authenticated();
+                        "/swagger-resources/configuration/security").permitAll()
+                .anyRequest().authenticated();
         http.addFilterBefore(accessTokenFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 
